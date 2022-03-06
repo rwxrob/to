@@ -1,12 +1,11 @@
 // Copyright 2022 Robert S. Muhlestein
 // SPDX-License-Identifier: Apache-2.0
-  
+
 package to_test
 
 import (
 	"fmt"
 
-	"github.com/rwxrob/bonzai/util"
 	"github.com/rwxrob/fn"
 	"github.com/rwxrob/fn/each"
 	"github.com/rwxrob/to"
@@ -44,7 +43,7 @@ func ExampleFuncName() {
 	// func1
 	// func2
 	// Foo
-	// Files
+	// Lines
 }
 
 func ExampleLines() {
@@ -56,7 +55,7 @@ here
 
 mkay
 `
-	each.Print(util.Lines(buf))
+	each.Print(to.Lines(buf))
 	// Output:
 	// something heremkay
 }

@@ -1,6 +1,6 @@
 // Copyright 2022 Robert S. Muhlestein
 // SPDX-License-Identifier: Apache-2.0
-  
+
 /*
 
 Package to contains a number of converters that take any number of types and return something transformed from them.
@@ -44,12 +44,12 @@ func FuncName(i any) string {
 
 // Lines transforms the input into a string and then divides that string
 // up into lines (\r?\n) suitable for functional map operations.
-func Lines[T any](in T) []string {
-	buf := fmt.Sprintf("%v", in)
+func Lines(in any) []string {
+	buf := String(in)
 	lines := []string{}
-	scan := bufio.NewScanner(strings.NewReader(buf))
-	for scan.Scan() {
-		lines = append(lines, scan.Text())
+	s := bufio.NewScanner(strings.NewReader(buf))
+	for s.Scan() {
+		lines = append(lines, s.Text())
 	}
 	return lines
 }
