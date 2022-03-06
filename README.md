@@ -1,4 +1,4 @@
-# Convert "to" Stuff in Go (1.18)
+# Library of Converters in Go 1.18+
 
 [![Go
 Version](https://img.shields.io/github/go-mod/go-version/rwxrob/to)](https://tip.golang.org/doc/go1.18)
@@ -7,4 +7,6 @@ Version](https://img.shields.io/github/go-mod/go-version/rwxrob/to)](https://tip
 [![Go Report
 Card](https://goreportcard.com/badge/github.com/rwxrob/to)](https://goreportcard.com/report/github.com/rwxrob/to)
 
-* [String](to_test.go)
+* [Any->String](to_test.go)
+* [String->Lines](to_test.go?line=47)
+* [Func->FuncName](to_test.go)

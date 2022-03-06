@@ -1,6 +1,20 @@
+// Copyright 2022 Robert S. Muhlestein
+// SPDX-License-Identifier: Apache-2.0
+  
+/*
+
+Package to contains a number of converters that take any number of types and return something transformed from them.
+
+*/
 package to
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"reflect"
+	"runtime"
+	"strings"
+)
 
 // String converts whatever is passed to its fmt.Sprintf("%v") string
 // version (but avoids calling it if possible). Be sure you use things
@@ -16,4 +30,26 @@ func String(in any) string {
 	default:
 		return fmt.Sprintf("%v", v)
 	}
+}
+
+// FuncName makes a best effort attempt to return the string name of the
+// passed function. Anonymous functions are named "funcN" where N is the
+// order of appearance within the current scope. Note that this function
+// will panic if not passed a function.
+func FuncName(i any) string {
+	p := runtime.FuncForPC(reflect.ValueOf(i).Pointer())
+	n := strings.Split(p.Name(), `.`)
+	return n[len(n)-1]
+}
+
+// Lines transforms the input into a string and then divides that string
+// up into lines (\r?\n) suitable for functional map operations.
+func Lines[T any](in T) []string {
+	buf := fmt.Sprintf("%v", in)
+	lines := []string{}
+	scan := bufio.NewScanner(strings.NewReader(buf))
+	for scan.Scan() {
+		lines = append(lines, scan.Text())
+	}
+	return lines
 }
