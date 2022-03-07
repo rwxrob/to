@@ -7,7 +7,7 @@ Version](https://img.shields.io/github/go-mod/go-version/rwxrob/to)](https://tip
 [![Go Report
 Card](https://goreportcard.com/badge/github.com/rwxrob/to)](https://goreportcard.com/report/github.com/rwxrob/to)
 
-* [Stringer/StringerLong Interfaces](to.go#L19)
+* [Stringer Interface](to.go#L19)
 * [Any->String](to_test.go#L19)
 * [String->Lines](to_test.go#L47)
 * [Func->FuncName](to_test.go#L34)
