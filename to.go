@@ -3,7 +3,7 @@
 
 /*
 
-Package to contains a number of converters that take any number of types and return something transformed from them.
+Package to contains a number of converters that take any number of types and return something transformed from them. It also contains a more granular approach to fmt.Stringer.
 
 */
 package to
@@ -15,6 +15,20 @@ import (
 	"runtime"
 	"strings"
 )
+
+// Stringer interfaces fulfills fmt.Stringer with the additional promise
+// that the output of String method will always be both consistently
+// parsable (say as JSON) and will never span more than a single line.
+type Stringer interface {
+	String() string
+}
+
+// StringerLong specifies an addition to the fmt.Stringer (String)
+// method that will produce a readable, parsable representation that may
+// span multiple lines.
+type StringerLong interface {
+	StringLong() string
+}
 
 // String converts whatever is passed to its fmt.Sprintf("%v") string
 // version (but avoids calling it if possible). Be sure you use things
