@@ -42,6 +42,60 @@ func String(in any) string {
 	}
 }
 
+// HumanFriend implementations have a human readable form that is even
+// friendlier than fmt.Stringer.
+type HumanFriend interface {
+	Human() string
+}
+
+// Human returns a human-friendly string version of the item,
+// specifically:
+//
+//     * single-quoted runes
+//     * double-quoted strings
+//     * numbers as numbers
+//     * slices joined with "," and wrapped in []
+//
+// Anything else is rendered as its fmt.Sprintf("%v",it) form.
+func Human(a any) string {
+	switch v := a.(type) {
+
+	case string:
+		return fmt.Sprintf("%q", v)
+
+	case rune:
+		return fmt.Sprintf("%q", v)
+
+	case []string:
+		st := []string{}
+		for _, r := range v {
+			st = append(st, fmt.Sprintf("%q", r))
+		}
+		return "[" + strings.Join(st, ",") + "]"
+
+	case []rune:
+		st := []string{}
+		for _, r := range v {
+			st = append(st, fmt.Sprintf("%q", r))
+		}
+		return "[" + strings.Join(st, ",") + "]"
+
+	case []any:
+		st := []string{}
+		for _, r := range v {
+			st = append(st, Human(r))
+		}
+		return "[" + strings.Join(st, ",") + "]"
+
+	case HumanFriend:
+		return v.Human()
+
+	default:
+		return fmt.Sprintf("%v", a)
+
+	}
+}
+
 // FuncName makes a best effort attempt to return the string name of the
 // passed function. Anonymous functions are named "funcN" where N is the
 // order of appearance within the current scope. Note that this function
