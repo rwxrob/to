@@ -68,14 +68,17 @@ type HumanFoo struct{}
 
 func (f HumanFoo) Human() string { return "a friendly foo" }
 
-func ExampleHuman() {
+func FooFunc(a any) {}
 
+func ExampleHuman() {
 	fmt.Println(to.Human('r'))                    // not number
 	fmt.Println(to.Human("string💢good"))          // unescaped
 	fmt.Println(to.Human(new(FooStruct)))         // has String()
 	fmt.Println(to.Human(new(HumanFoo)))          // has Human()
 	fmt.Println(to.Human([]rune{'r', 's', 'm'}))  // commas
 	fmt.Println(to.Human([]string{"foo", "bar"})) // also commas
+	fmt.Println(to.Human(func() {}))              // func1
+	fmt.Println(to.Human(FooFunc))                // FooFunc
 	// Output:
 	// 'r'
 	// "string💢good"
@@ -83,4 +86,6 @@ func ExampleHuman() {
 	// a friendly foo
 	// ['r','s','m']
 	// ["foo","bar"]
+	// func1
+	// FooFunc
 }

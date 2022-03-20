@@ -54,6 +54,7 @@ type HumanFriend interface {
 //     * single-quoted runes
 //     * double-quoted strings
 //     * numbers as numbers
+//     * function names are looked up
 //     * slices joined with "," and wrapped in []
 //
 // Anything else is rendered as its fmt.Sprintf("%v",it) form.
@@ -91,6 +92,9 @@ func Human(a any) string {
 		return v.Human()
 
 	default:
+		if fmt.Sprintf("%v", reflect.TypeOf(a))[0:4] == "func" {
+			return FuncName(a)
+		}
 		return fmt.Sprintf("%v", a)
 
 	}
