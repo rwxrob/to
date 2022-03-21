@@ -92,7 +92,8 @@ func Human(a any) string {
 		return v.Human()
 
 	default:
-		if fmt.Sprintf("%v", reflect.TypeOf(a))[0:4] == "func" {
+		typ := fmt.Sprintf("%v", reflect.TypeOf(a))
+		if len(typ) > 3 && typ[0:4] == "func" {
 			return FuncName(a)
 		}
 		return fmt.Sprintf("%v", a)
