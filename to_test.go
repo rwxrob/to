@@ -98,8 +98,10 @@ func ExampleDedent_simple() {
 
 func ExampleDedent_multiple_Blank_Lines() {
 	fmt.Printf("%q\n", to.Dedented("\n\n   \n\n    foo\n    bar"))
+	fmt.Printf("%q\n", to.Dedented("\n   \n\n  \n   some"))
 	// Output:
 	// "foo\nbar"
+	// "some"
 }
 
 func ExampleDedent_accidental_Chop() {
@@ -118,4 +120,16 @@ func ExampleIndentation() {
 	// 2
 	// 0
 	// 1
+}
+
+func ExampleHardWrapped() {
+	fmt.Printf("%q\n", to.HardWrapped("some thing", 3))
+	fmt.Printf("%v\n", to.HardWrapped("There I was not knowing what to do about this exceedingly long line and knowing that certain people would shun me for injecting\nreturns wherever I wanted.", 40))
+	// Output:
+	// "some\nthing"
+	// There I was not knowing what to do about
+	// this exceedingly long line and knowing
+	// that certain people would shun me for
+	// injecting
+	// returns wherever I wanted.
 }
