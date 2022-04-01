@@ -12,6 +12,7 @@ import (
 	"bufio"
 	"fmt"
 	"reflect"
+	"regexp"
 	"runtime"
 	"strings"
 )
@@ -121,4 +122,44 @@ func Lines(in any) []string {
 		lines = append(lines, s.Text())
 	}
 	return lines
+}
+
+// Dedented discards any initial lines with nothing but spaces in them and
+// then detects the number of space characters at the beginning of the
+// first line to the first non-space rune and then subsequently removes
+// exactly that many of runes from every following line treating empty
+// lines as if they had only n number of spaces. Note that if any line
+// does not have n number of initial spaces it the initial runes will
+// still be removed. It is, therefore, up to the content creator to
+// ensure that all lines have the same space indentation.
+func Dedented(in string) string {
+	isblank := regexp.MustCompile(`^\s*$`)
+	lines := Lines(in)
+	var n int
+	for {
+		if len(lines[n]) == 0 || isblank.MatchString(lines[n]) {
+			n++
+			continue
+		}
+		break
+	}
+	starts := n
+	indent := Indentation(lines[n])
+	for ; n < len(lines); n++ {
+		lines[n] = lines[n][indent:]
+	}
+	return strings.Join(lines[starts:], "\n")
+}
+
+// Indentation returns the number of spaces (in bytes) between beginning
+// of the passed string and the first non-space rune.
+func Indentation(in string) int {
+	var n int
+	var v rune
+	for n, v = range in {
+		if v != ' ' {
+			break
+		}
+	}
+	return n
 }

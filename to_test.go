@@ -89,3 +89,33 @@ func ExampleHuman() {
 	// func1
 	// FooFunc
 }
+
+func ExampleDedent_simple() {
+	fmt.Printf("%q\n", to.Dedented("\n    foo\n    bar"))
+	// Output:
+	// "foo\nbar"
+}
+
+func ExampleDedent_multiple_Blank_Lines() {
+	fmt.Printf("%q\n", to.Dedented("\n\n   \n\n    foo\n    bar"))
+	// Output:
+	// "foo\nbar"
+}
+
+func ExampleDedent_accidental_Chop() {
+	fmt.Printf("%q\n", to.Dedented("\n\n   \n\n    foo\n   bar"))
+	// Output:
+	// "foo\nar"
+}
+
+func ExampleIndentation() {
+	fmt.Println(to.Indentation("    some"))
+	fmt.Println(to.Indentation("  some"))
+	fmt.Println(to.Indentation("some"))
+	fmt.Println(to.Indentation(" 💚ome"))
+	// Output:
+	// 4
+	// 2
+	// 0
+	// 1
+}
