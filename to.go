@@ -16,6 +16,8 @@ import (
 	"runtime"
 	"strings"
 	"unicode"
+
+	"github.com/rwxrob/fn/maps"
 )
 
 // Stringer interfaces fulfills fmt.Stringer with the additional promise
@@ -125,6 +127,21 @@ func Lines(in any) []string {
 	return lines
 }
 
+// IndentWrapped adds the specified number of spaces to the beginning of
+// every line ensuring that the wrapping is preserved to the specified
+// width. Carriage returns (if any) are dropped.
+func IndentWrapped(in string, indent, width int) string {
+	return Prefixed(Wrapped(in, width-indent), strings.Repeat(" ", indent))
+}
+
+// Prefixed returns a string where every line is prefixed. Carriage
+// returns (if any) are dropped.
+func Prefixed(in, pre string) string {
+	lines := Lines(in)
+	lines = maps.Prefix(lines, pre)
+	return strings.Join(lines, "\n")
+}
+
 // Dedented discards any initial lines with nothing but spaces in them and
 // then detects the number of space characters at the beginning of the
 // first line to the first non-space rune and then subsequently removes
@@ -177,13 +194,13 @@ func peekWord(buf []rune, start int) []rune {
 	return word
 }
 
-// HardWrapped expects a string optionally containing line returns (\n)
+// Wrapped expects a string optionally containing line returns (\n)
 // that will be kept as hard wrap line boundaries and returns every
 // other line exceeding the specified width as one or more wrapped
 // lines. All spaces are crunched into a single space. If passed
 // a negative width effectively joins all words in the buffer into
 // a single line with no wrapping.
-func HardWrapped(buf string, width int) string {
+func Wrapped(buf string, width int) string {
 	if width == 0 {
 		return buf
 	}

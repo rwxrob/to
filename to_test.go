@@ -122,9 +122,9 @@ func ExampleIndentation() {
 	// 1
 }
 
-func ExampleHardWrapped() {
-	fmt.Printf("%q\n", to.HardWrapped("some thing", 3))
-	fmt.Printf("%v\n", to.HardWrapped("There I was not knowing what to do about this exceedingly long line and knowing that certain people would shun me for injecting\nreturns wherever I wanted.", 40))
+func ExampleWrapped() {
+	fmt.Printf("%q\n", to.Wrapped("some thing", 3))
+	fmt.Printf("%v\n", to.Wrapped("There I was not knowing what to do about this exceedingly long line and knowing that certain people would shun me for injecting\nreturns wherever I wanted.", 40))
 	// Output:
 	// "some\nthing"
 	// There I was not knowing what to do about
@@ -132,4 +132,18 @@ func ExampleHardWrapped() {
 	// that certain people would shun me for
 	// injecting
 	// returns wherever I wanted.
+}
+
+func ExamplePrefixed() {
+	fmt.Println(to.Prefixed("some\nthing", "P  "))
+	// Output:
+	// P  some
+	// P  thing
+}
+
+func ExampleIndentWrapped() {
+	fmt.Println(to.IndentWrapped("some\nthing", 5, 80))
+	// Output:
+	//      some
+	//      thing
 }
