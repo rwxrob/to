@@ -17,6 +17,7 @@ import (
 	"strings"
 	"unicode"
 
+	"github.com/rwxrob/fn/filt"
 	"github.com/rwxrob/fn/maps"
 )
 
@@ -227,4 +228,13 @@ func Wrapped(buf string, width int) string {
 		curwidth++
 	}
 	return nbuf
+}
+
+// UsageGroup joins the slice with bars (|) and wraps with parentheses
+// suitable for listing as a group within most command usage strings.
+// Empty args are ignored and if no args are passed returns empty
+// string. Note that no transformation is done to the string itself
+// (such as removing white space).
+func UsageGroup(args ...string) string {
+	return "(" + strings.Join(filt.NotEmpty(args), "|") + ")"
 }

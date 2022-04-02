@@ -147,3 +147,9 @@ func ExampleIndentWrapped() {
 	//      some
 	//      thing
 }
+
+func ExampleUsageGroup() {
+	fmt.Println(to.UsageGroup([]string{"", "foo", "", "bar", "with space"}...))
+	// Output:
+	// (foo|bar|with space)
+}
