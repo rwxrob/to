@@ -150,6 +150,8 @@ func ExampleIndentWrapped() {
 
 func ExampleUsageGroup() {
 	fmt.Println(to.UsageGroup([]string{"", "foo", "", "bar", "with space"}...))
+	fmt.Printf("%q\n", to.UsageGroup([]string{"", ""}...))
 	// Output:
 	// (foo|bar|with space)
+	// ""
 }

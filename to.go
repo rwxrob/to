@@ -236,5 +236,9 @@ func Wrapped(buf string, width int) string {
 // string. Note that no transformation is done to the string itself
 // (such as removing white space).
 func UsageGroup(args ...string) string {
-	return "(" + strings.Join(filt.NotEmpty(args), "|") + ")"
+	args = filt.NotEmpty(args)
+	if len(args) == 0 {
+		return ""
+	}
+	return "(" + strings.Join(args, "|") + ")"
 }
