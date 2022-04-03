@@ -18,6 +18,7 @@ import (
 	"unicode"
 
 	"github.com/rwxrob/fn/maps"
+	"github.com/rwxrob/structs/qstack"
 )
 
 // Stringer interfaces fulfills fmt.Stringer with the additional promise
@@ -129,9 +130,15 @@ func Lines(in any) []string {
 
 // IndentWrapped adds the specified number of spaces to the beginning of
 // every line ensuring that the wrapping is preserved to the specified
-// width. Carriage returns (if any) are dropped.
+// width. See Wrapped.
 func IndentWrapped(in string, indent, width int) string {
-	return Prefixed(Wrapped(in, width-indent), strings.Repeat(" ", indent))
+	wwidth := width - indent
+	body, _ := Wrapped(in, wwidth)
+	var buf string
+	for _, line := range Lines(body) {
+		buf += fmt.Sprintln(strings.Repeat(" ", indent) + line)
+	}
+	return buf
 }
 
 // Prefixed returns a string where every line is prefixed. Carriage
@@ -142,89 +149,78 @@ func Prefixed(in, pre string) string {
 	return strings.Join(lines, "\n")
 }
 
-// Dedented discards any initial lines with nothing but spaces in them and
-// then detects the number of space characters at the beginning of the
-// first line to the first non-space rune and then subsequently removes
-// exactly that many of runes from every following line treating empty
-// lines as if they had only n number of spaces. Note that if any line
-// does not have n number of initial spaces it the initial runes will
-// still be removed. It is, therefore, up to the content creator to
-// ensure that all lines have the same space indentation.
+// Dedented discards any initial lines with nothing but whitespace in
+// them and then detects the number and type of whitespace characters at
+// the beginning of the first line to the first non-whitespace rune and
+// then subsequently removes that number of runes from every
+// following line treating empty lines as if they had only n number of
+// spaces.  Note that if any line does not have n number of initial
+// spaces it the initial runes will still be removed. It is, therefore,
+// up to the content creator to ensure that all lines have the same
+// space indentation.
 func Dedented(in string) string {
 	isblank := regexp.MustCompile(`^\s*$`)
 	lines := Lines(in)
 	var n int
-	for {
-		if len(lines[n]) == 0 || isblank.MatchString(lines[n]) {
-			n++
-			continue
-		}
-		break
+	for len(lines[n]) == 0 || isblank.MatchString(lines[n]) {
+		n++
 	}
 	starts := n
 	indent := Indentation(lines[n])
 	for ; n < len(lines); n++ {
-		lines[n] = lines[n][indent:]
+		if len(lines[n]) > indent {
+			lines[n] = lines[n][indent:]
+		}
 	}
 	return strings.Join(lines[starts:], "\n")
 }
 
-// Indentation returns the number of spaces (in bytes) between beginning
-// of the passed string and the first non-space rune.
+// Indentation returns the number of whitespace runes (in bytes) between
+// beginning of the passed string and the first non-whitespace rune.
 func Indentation(in string) int {
 	var n int
 	var v rune
 	for n, v = range in {
-		if v != ' ' {
+		if !unicode.IsSpace(v) {
 			break
 		}
 	}
 	return n
 }
 
-// peekWord returns the runes up to the next space.
-func peekWord(buf []rune, start int) []rune {
-	word := []rune{}
-	for _, r := range buf[start:] {
-		if unicode.IsSpace(r) {
-			break
-		}
-		word = append(word, r)
+// Wrapped will return a word wrapped string at the given boundary width
+// (in bytes) and the count of words contained in the string.  All
+// whitespace is compressed to a single space. Any width less than
+// 1 will simply trim and crunch whitespace returning essentially the
+// same string and the word count.  If the width is less than any given
+// word at the start of a line than it will be the only word on the line
+// even if the word length exceeds the width. Non attempt at
+// word-hyphenation is made. Note that whitespace is defined as
+// unicode.IsSpace and does not include control characters.
+func Wrapped(it string, width int) (string, int) {
+	words := qstack.Fields(it)
+	if width < 1 {
+		return strings.Join(words.Items(), " "), words.Len
 	}
-	return word
-}
-
-// Wrapped expects a string optionally containing line returns (\n)
-// that will be kept as hard wrap line boundaries and returns every
-// other line exceeding the specified width as one or more wrapped
-// lines. All spaces are crunched into a single space. If passed
-// a negative width effectively joins all words in the buffer into
-// a single line with no wrapping.
-func Wrapped(buf string, width int) string {
-	if width == 0 {
-		return buf
-	}
-	nbuf := ""
-	curwidth := 0
-	for i, r := range []rune(buf) {
-		// hard breaks always as is
-		if r == '\n' {
-			nbuf += "\n"
-			curwidth = 0
+	var curwidth int
+	var wrapped string
+	var line []string
+	for words.Scan() {
+		cur := words.Current()
+		if len(line) == 0 {
+			line = append(line, cur)
+			curwidth += len(cur) + 1
 			continue
 		}
-		if unicode.IsSpace(r) {
-			// FIXME: don't peek every word, only after passed width
-			// change the space to a '\n' in the buffer slice directly
-			next := peekWord([]rune(buf), i+1)
-			if width > 0 && (curwidth+len(next)+1) > width {
-				nbuf += "\n"
-				curwidth = 0
-				continue
-			}
+		if curwidth+len(cur) > width {
+			wrapped += strings.Join(line, " ") + "\n"
+			curwidth = len(cur) + 1
+			line = []string{cur}
+			continue
 		}
-		nbuf += string(r)
-		curwidth++
+		line = append(line, cur)
+		curwidth += len(cur) + 1
 	}
-	return nbuf
+	wrapped += strings.Join(line, " ")
+	return wrapped, words.Len
 }

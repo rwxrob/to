@@ -96,6 +96,12 @@ func ExampleDedent_simple() {
 	// "foo\nbar"
 }
 
+func ExampleDedent_tabs_or_Spaces() {
+	fmt.Printf("%q\n", to.Dedented("\n\t\tfoo\n\t\tbar"))
+	// Output:
+	// "foo\nbar"
+}
+
 func ExampleDedent_multiple_Blank_Lines() {
 	fmt.Printf("%q\n", to.Dedented("\n\n   \n\n    foo\n    bar"))
 	fmt.Printf("%q\n", to.Dedented("\n   \n\n  \n   some"))
@@ -122,16 +128,15 @@ func ExampleIndentation() {
 	// 1
 }
 
+//wrapped, count = to.Wrapped("There I was not knowing what to do about this exceedingly long line and knowing that certain people would shun me for injecting\nreturns wherever I wanted.", 40)
+
 func ExampleWrapped() {
-	fmt.Printf("%q\n", to.Wrapped("some thing", 3))
-	fmt.Printf("%v\n", to.Wrapped("There I was not knowing what to do about this exceedingly long line and knowing that certain people would shun me for injecting\nreturns wherever I wanted.", 40))
+
+	wrapped, count := to.Wrapped("some thing", 3)
+	fmt.Printf("%q %v\n", wrapped, count)
+
 	// Output:
-	// "some\nthing"
-	// There I was not knowing what to do about
-	// this exceedingly long line and knowing
-	// that certain people would shun me for
-	// injecting
-	// returns wherever I wanted.
+	// "some\nthing" 2
 }
 
 func ExamplePrefixed() {
@@ -142,8 +147,26 @@ func ExamplePrefixed() {
 }
 
 func ExampleIndentWrapped() {
-	fmt.Println(to.IndentWrapped("some\nthing", 5, 80))
+
+	description := `
+		The y2j command converts YAML (including references and
+		anchors) to compressed JSON (with a single training newline) using
+		the popular Go yaml.v3 package and its special <yaml:",inline"> tag.
+		Because of this only YAML maps are supported as a base type (no
+		arrays). An array can easily be done as the value of a map key.
+
+		`
+
+	fmt.Println("Indented:\n" + to.IndentWrapped(description, 7, 60))
+
 	// Output:
-	//      some
-	//      thing
+	// Indented:
+	//        The y2j command converts YAML (including references
+	//        and anchors) to compressed JSON (with a single
+	//        training newline) using the popular Go yaml.v3
+	//        package and its special <yaml:",inline"> tag. Because
+	//        of this only YAML maps are supported as a base type
+	//        (no arrays). An array can easily be done as the value
+	//        of a map key.
+
 }
