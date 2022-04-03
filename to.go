@@ -21,16 +21,6 @@ import (
 	"github.com/rwxrob/structs/qstack"
 )
 
-// Stringer interfaces fulfills fmt.Stringer with the additional promise
-// that the output of String method will always be both consistently
-// parsable (say as JSON) and will never span more than a single line.
-// Stringer also requires the StringLong method promising to produce
-// parsable strings that span multiple lines to remain easy to read.
-type Stringer interface {
-	String() string
-	StringLong() string
-}
-
 // String converts whatever is passed to its fmt.Sprintf("%v") string
 // version (but avoids calling it if possible). Be sure you use things
 // with consistent string representations.
