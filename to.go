@@ -146,7 +146,7 @@ func Prefixed(in, pre string) string {
 	return strings.Join(lines, "\n")
 }
 
-// Dedented discards any initial lines with nothing but whitespace in
+// Dedented discards any initial blank lines with nothing but whitespace in
 // them and then detects the number and type of whitespace characters at
 // the beginning of the first line to the first non-whitespace rune and
 // then subsequently removes that number of runes from every
@@ -165,7 +165,7 @@ func Dedented(in string) string {
 	starts := n
 	indent := Indentation(lines[n])
 	for ; n < len(lines); n++ {
-		if len(lines[n]) > indent {
+		if len(lines[n]) >= indent {
 			lines[n] = lines[n][indent:]
 		}
 	}
