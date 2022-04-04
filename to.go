@@ -118,17 +118,24 @@ func Lines(in any) []string {
 	return lines
 }
 
+// Indented returns a string with each line indented by the specified
+// number of spaces. Carriage returns are stripped (if found) as
+// a side-effect.
+func Indented(in string, indent int) string {
+	var buf string
+	for _, line := range Lines(in) {
+		buf += fmt.Sprintln(strings.Repeat(" ", indent) + line)
+	}
+	return buf
+}
+
 // IndentWrapped adds the specified number of spaces to the beginning of
 // every line ensuring that the wrapping is preserved to the specified
 // width. See Wrapped.
 func IndentWrapped(in string, indent, width int) string {
 	wwidth := width - indent
 	body, _ := Wrapped(in, wwidth)
-	var buf string
-	for _, line := range Lines(body) {
-		buf += fmt.Sprintln(strings.Repeat(" ", indent) + line)
-	}
-	return buf
+	return Indented(body, indent)
 }
 
 // Prefixed returns a string where every line is prefixed. Carriage

@@ -139,6 +139,14 @@ func ExampleWrapped() {
 	// "some\nthing" 2
 }
 
+func ExampleIndented() {
+	fmt.Println("Indented:\n" + to.Indented("some\nthing", 4))
+	// Output:
+	// Indented:
+	//     some
+	//     thing
+}
+
 func ExamplePrefixed() {
 	fmt.Println(to.Prefixed("some\nthing", "P  "))
 	// Output:
