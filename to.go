@@ -21,6 +21,8 @@ import (
 	"github.com/rwxrob/structs/qstack"
 )
 
+type Text interface{ string | []rune }
+
 // String converts whatever is passed to its fmt.Sprintf("%v") string
 // version (but avoids calling it if possible). Be sure you use things
 // with consistent string representations.
@@ -174,10 +176,10 @@ func Dedented(in string) string {
 
 // Indentation returns the number of whitespace runes (in bytes) between
 // beginning of the passed string and the first non-whitespace rune.
-func Indentation(in string) int {
+func Indentation[T Text](in T) int {
 	var n int
 	var v rune
-	for n, v = range in {
+	for n, v = range []rune(in) {
 		if !unicode.IsSpace(v) {
 			break
 		}
