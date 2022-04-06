@@ -139,6 +139,25 @@ func ExampleWrapped() {
 	// "some\nthing" 2
 }
 
+func ExampleWrapped_long() {
+	in := `
+		The config command allows configuration of the current command in
+		YAML and JSON (since all JSON is valid YAML). All changes to
+		configuration values are done via the <edit> command since
+		configurations may be complex and deeply nested in some cases.
+		Querying configuration data, however, can be easily accomplished
+		with the <query> command that uses jq-like selection syntax.`
+
+	out, count := to.Wrapped(in, 80)
+	fmt.Println(count)
+	fmt.Printf("%q", out)
+
+	//Output:
+	// 58
+	// "The config command allows configuration of the current command in YAML and JSON\n(since all JSON is valid YAML). All changes to configuration values are done via\nthe <edit> command since configurations may be complex and deeply nested in some\ncases. Querying configuration data, however, can be easily accomplished with the\n<query> command that uses jq-like selection syntax."
+
+}
+
 func ExampleIndented() {
 	fmt.Println("Indented:\n" + to.Indented("some\nthing", 4))
 	// Output:
