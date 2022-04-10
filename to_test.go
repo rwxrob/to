@@ -197,3 +197,12 @@ func ExampleIndentWrapped() {
 	//        of a map key.
 
 }
+
+func ExampleMergedMaps() {
+	m1 := map[string]any{"foo": 1, "bar": 2}
+	m2 := map[string]any{"FOO": 1, "BAR": 2}
+	m3 := map[string]any{"foo": 10}
+	fmt.Println(to.MergedMaps(m1, m2, m3))
+	// Output:
+	// map[BAR:2 FOO:1 bar:2 foo:10]
+}

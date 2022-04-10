@@ -223,3 +223,15 @@ func Wrapped(it string, width int) (string, int) {
 	wrapped += strings.Join(line, " ")
 	return wrapped, words.Len
 }
+
+// MergedMaps combines the maps with "last wins" priority. Always
+// returns a new map of the given type, even if empty.
+func MergedMaps[K comparable, V any](maps ...map[K]V) map[K]V {
+	combined := map[K]V{}
+	for _, m := range maps {
+		for k, v := range m {
+			combined[k] = v
+		}
+	}
+	return combined
+}
