@@ -235,3 +235,22 @@ func MergedMaps[K comparable, V any](maps ...map[K]V) map[K]V {
 	}
 	return combined
 }
+
+// EscReturns changes any actual carriage returns or line returns into
+// their backslashed equivalents and returns a string. This is different
+// than Sprintf("%q") since that escapes several other things.
+func EscReturns[T string | []byte | []rune](in T) string {
+	runes := []rune(string(in))
+	var out string
+	for _, r := range runes {
+		switch r {
+		case '\r':
+			out += "\\r"
+		case '\n':
+			out += "\\n"
+		default:
+			out += string(r)
+		}
+	}
+	return string(out)
+}

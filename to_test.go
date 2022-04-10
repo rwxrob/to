@@ -206,3 +206,9 @@ func ExampleMergedMaps() {
 	// Output:
 	// map[BAR:2 FOO:1 bar:2 foo:10]
 }
+
+func ExampleEscReturns() {
+	fmt.Println(to.EscReturns("some\rthing\n"))
+	// Output:
+	// some\rthing\n
+}
