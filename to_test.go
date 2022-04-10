@@ -212,3 +212,9 @@ func ExampleEscReturns() {
 	// Output:
 	// some\rthing\n
 }
+
+func ExampleUnEscReturns() {
+	fmt.Printf("%q\n", to.UnEscReturns(`some\rthing\n`))
+	// Output:
+	// "some\rthing\n"
+}

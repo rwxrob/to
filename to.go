@@ -254,3 +254,24 @@ func EscReturns[T string | []byte | []rune](in T) string {
 	}
 	return string(out)
 }
+
+// UnEscReturns changes any escaped carriage returns or line returns into
+// their actual values.
+func UnEscReturns[T string | []byte | []rune](in T) string {
+	runes := []rune(string(in))
+	var out string
+	for n := 0; n < len(runes); n++ {
+		if runes[n] == '\\' && runes[n+1] == 'r' {
+			out += "\r"
+			n++
+			continue
+		}
+		if runes[n] == '\\' && runes[n+1] == 'n' {
+			out += "\n"
+			n++
+			continue
+		}
+		out += string(runes[n])
+	}
+	return string(out)
+}
