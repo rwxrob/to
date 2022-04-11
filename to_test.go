@@ -218,3 +218,11 @@ func ExampleUnEscReturns() {
 	// Output:
 	// "some\rthing\n"
 }
+
+func ExampleHTTPS() {
+	fmt.Println(to.HTTPS(`https://rwx.gg`))
+	fmt.Println(to.HTTPS(`rwx.gg`))
+	// Output:
+	// https://rwx.gg
+	// https://rwx.gg
+}

@@ -275,3 +275,12 @@ func UnEscReturns[T string | []byte | []rune](in T) string {
 	}
 	return string(out)
 }
+
+// HTTPS simply adds the prefix "https://" if not found. Useful for
+// allowing non-prefixed URLs and later converting them.
+func HTTPS(url string) string {
+	if len(url) < 8 || url[0:8] != "https://" {
+		return "https://" + url
+	}
+	return url
+}
