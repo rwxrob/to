@@ -244,6 +244,10 @@ func StopWatch(dur time.Duration) string {
 	var out string
 
 	sec := dur.Seconds()
+	if sec < 0 {
+		out += "-"
+	}
+	sec = math.Abs(sec)
 
 	if sec >= 3600 {
 		hours := sec / 3600
