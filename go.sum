@@ -1,6 +1,12 @@
 github.com/rwxrob/fn v0.3.2 h1:O22srjqyn3iLdUjNG/AKN4wkZgBUuHVaGIvTJzaG1Z4=
 github.com/rwxrob/fn v0.3.2/go.mod h1:omPqOqEB+dDna09z5pi5YFxq4IZqDvv3wFPUCES5LvY=
+github.com/rwxrob/fn v0.3.3 h1:ymRQGWDhrrvoHKXLJ4WZlgI2qrC7gMOotowQMGvwmVQ=
+github.com/rwxrob/fn v0.3.3/go.mod h1:omPqOqEB+dDna09z5pi5YFxq4IZqDvv3wFPUCES5LvY=
+github.com/rwxrob/scan v0.6.1 h1:KMGi/kV7TY4pcVo8H/HVwwyQZ2gBFNQI3g7tT121Voo=
+github.com/rwxrob/scan v0.6.1/go.mod h1:eF28AgH3YUvP7E9UrhjePRUyLq3Gh7+fR28P7Z/Ku4E=
 github.com/rwxrob/structs v0.5.0 h1:pjLsfyYHS+gB1CtzRj3H39wRYL4lI5pTpFf8kl91guw=
 github.com/rwxrob/structs v0.5.0/go.mod h1:2gIte2ZI9zUok6q6F3v3l41ZXo7Zg5Kf1GUTP2+pXyQ=
 github.com/rwxrob/structs v0.5.1 h1:epff+4ihej+EgsQx0qOAS/cn7ix3qSLor0M/AjWiV3M=
 github.com/rwxrob/structs v0.5.1/go.mod h1:e888JzBSTrMMizNYFnk426F77QneVUKgdxM5inMHErY=
+github.com/rwxrob/structs v0.6.0 h1:t8JVd/Pee1OGaXgT6QYmGed470C9vOw6scdH8Cr5LPg=
+github.com/rwxrob/structs v0.6.0/go.mod h1:txMfzPfEiIDNM5bwhzUqxr/1QQ3ekOuj3KLT8Nt1fA0=

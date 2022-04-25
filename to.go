@@ -20,6 +20,7 @@ import (
 	"unicode"
 
 	"github.com/rwxrob/fn/maps"
+	"github.com/rwxrob/scan"
 	"github.com/rwxrob/structs/qstack"
 )
 
@@ -194,10 +195,11 @@ func Indentation[T Text](in T) int {
 // is critical when calculating line lengths for terminal output where
 // the string contains escape characters. Note that some runes will
 // occupy two columns instead of one depending on the terminal.
-func RuneCount[T Text](a T) int {
+func RuneCount[T string | []byte | []rune](in T) int {
 	var c int
-	for _, r := range []rune(a) {
-		if unicode.IsGraphic(r) {
+	s := scan.R{Buf: []byte(string(in))}
+	for s.Scan() {
+		if unicode.IsGraphic(s.Rune) {
 			c++
 		}
 	}
@@ -225,14 +227,15 @@ func Wrapped(it string, width int) (string, int) {
 	var line []string
 	for words.Scan() {
 		cur := words.Current()
+		count := RuneCount(cur)
 		if len(line) == 0 {
 			line = append(line, cur)
-			curwidth += RuneCount(cur) + 1
+			curwidth += count
 			continue
 		}
-		if curwidth+len(cur) > width {
+		if curwidth+count+1 > width {
 			wrapped += strings.Join(line, " ") + "\n"
-			curwidth = RuneCount(cur) + 1
+			curwidth = count
 			line = []string{cur}
 			continue
 		}

@@ -228,6 +228,7 @@ func ExampleHTTPS() {
 }
 
 func ExampleRuneCount() {
+	//scan.Trace++
 	fmt.Println(to.RuneCount("\033some\033"))
 	fmt.Println(to.RuneCount("some"))
 	// Output:
