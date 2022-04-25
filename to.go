@@ -189,6 +189,21 @@ func Indentation[T Text](in T) int {
 	return n
 }
 
+// RuneCount returns the actual number of runes of the string only
+// counting the unicode.IsGraphic runes. All others are ignored.  This
+// is critical when calculating line lengths for terminal output where
+// the string contains escape characters. Note that some runes will
+// occupy two columns instead of one depending on the terminal.
+func RuneCount[T Text](a T) int {
+	var c int
+	for _, r := range []rune(a) {
+		if unicode.IsGraphic(r) {
+			c++
+		}
+	}
+	return c
+}
+
 // Wrapped will return a word wrapped string at the given boundary width
 // (in bytes) and the count of words contained in the string.  All
 // whitespace is compressed to a single space. Any width less than
@@ -197,7 +212,9 @@ func Indentation[T Text](in T) int {
 // word at the start of a line than it will be the only word on the line
 // even if the word length exceeds the width. Non attempt at
 // word-hyphenation is made. Note that whitespace is defined as
-// unicode.IsSpace and does not include control characters.
+// unicode.IsSpace and does not include control characters. Anything
+// that is not unicode.IsSpace or unicode.IsGraphic will be ignored in
+// the column count.
 func Wrapped(it string, width int) (string, int) {
 	words := qstack.Fields(it)
 	if width < 1 {
@@ -210,17 +227,17 @@ func Wrapped(it string, width int) (string, int) {
 		cur := words.Current()
 		if len(line) == 0 {
 			line = append(line, cur)
-			curwidth += len(cur) + 1
+			curwidth += RuneCount(cur) + 1
 			continue
 		}
 		if curwidth+len(cur) > width {
 			wrapped += strings.Join(line, " ") + "\n"
-			curwidth = len(cur) + 1
+			curwidth = RuneCount(cur) + 1
 			line = []string{cur}
 			continue
 		}
 		line = append(line, cur)
-		curwidth += len(cur) + 1
+		curwidth += RuneCount(cur) + 1
 	}
 	wrapped += strings.Join(line, " ")
 	return wrapped, words.Len

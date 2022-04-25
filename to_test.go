@@ -226,3 +226,11 @@ func ExampleHTTPS() {
 	// https://rwx.gg
 	// https://rwx.gg
 }
+
+func ExampleRuneCount() {
+	fmt.Println(to.RuneCount("\033some\033"))
+	fmt.Println(to.RuneCount("some"))
+	// Output:
+	// 4
+	// 4
+}
