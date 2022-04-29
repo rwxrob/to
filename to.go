@@ -197,9 +197,9 @@ func Indentation[T Text](in T) int {
 // occupy two columns instead of one depending on the terminal.
 func RuneCount[T string | []byte | []rune](in T) int {
 	var c int
-	s := scan.R{Buf: []byte(string(in))}
+	s := scan.R{B: []byte(string(in))}
 	for s.Scan() {
-		if unicode.IsGraphic(s.Rune) {
+		if unicode.IsGraphic(s.R) {
 			c++
 		}
 	}
