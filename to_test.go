@@ -5,6 +5,7 @@ package to_test
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/rwxrob/fn"
 	"github.com/rwxrob/fn/each"
@@ -234,4 +235,39 @@ func ExampleRuneCount() {
 	// Output:
 	// 4
 	// 4
+}
+
+func ExampleBytes_bytes() {
+	fmt.Printf("%T", to.Bytes([]byte(`foo`)))
+	// Output:
+	// []uint8
+}
+
+func ExampleBytes_string() {
+	fmt.Printf("%T", to.Bytes(`foo`))
+	// Output:
+	// []uint8
+}
+
+func ExampleBytes_runes() {
+	fmt.Printf("%T", to.Bytes([]rune(`foo`)))
+	// Output:
+	// []uint8
+}
+
+func ExampleBytes_reader() {
+	fmt.Printf("%T", to.Bytes(strings.NewReader(`foo`)))
+	// Output:
+	// []uint8
+}
+
+func ExampleBytes_bork() {
+	it := to.Bytes(42)
+	if it == nil {
+		fmt.Println("yes, it is nil")
+	}
+	fmt.Printf("%v %T", it, it)
+	// Output:
+	// yes, it is nil
+	// [] []uint8
 }

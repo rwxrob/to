@@ -11,6 +11,8 @@ package to
 import (
 	"bufio"
 	"fmt"
+	"io"
+	"log"
 	"math"
 	"reflect"
 	"regexp"
@@ -39,6 +41,29 @@ func String(in any) string {
 		return string(v)
 	default:
 		return fmt.Sprintf("%v", v)
+	}
+}
+
+// Bytes converts whatever is passed into a []byte slice. Logs and
+// returns nil if it cannot convert. Supports the following types:
+// string, []byte, []rune, io.Reader.
+func Bytes(in any) []byte {
+	switch v := in.(type) {
+	case string:
+		return []byte(v)
+	case []byte:
+		return v
+	case []rune:
+		return []byte(string(v))
+	case io.Reader:
+		buf, err := io.ReadAll(v)
+		if err != nil {
+			log.Println(err)
+		}
+		return buf
+	default:
+		log.Printf("cannot convert %T to bytes", in)
+		return nil
 	}
 }
 
