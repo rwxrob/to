@@ -231,14 +231,21 @@ func RuneCount[T string | []byte | []rune](in T) int {
 	return c
 }
 
+// Words will return the string will all contiguous runs of
+// unicode.IsSpace runes converted into a single space. All leading and
+// trailing white space will also be trimmed.
+func Words(it string) string {
+	return strings.Join(qstack.Fields(it).Items(), " ")
+}
+
 // Wrapped will return a word wrapped string at the given boundary width
 // (in bytes) and the count of words contained in the string.  All
-// whitespace is compressed to a single space. Any width less than
-// 1 will simply trim and crunch whitespace returning essentially the
+// white space is compressed to a single space. Any width less than
+// 1 will simply trim and crunch white space returning essentially the
 // same string and the word count.  If the width is less than any given
 // word at the start of a line than it will be the only word on the line
 // even if the word length exceeds the width. Non attempt at
-// word-hyphenation is made. Note that whitespace is defined as
+// word-hyphenation is made. Note that white space is defined as
 // unicode.IsSpace and does not include control characters. Anything
 // that is not unicode.IsSpace or unicode.IsGraphic will be ignored in
 // the column count.
