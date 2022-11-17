@@ -5,7 +5,9 @@ package to_test
 
 import (
 	"fmt"
+	"log"
 	"strings"
+	"time"
 
 	"github.com/rwxrob/fn"
 	"github.com/rwxrob/fn/each"
@@ -270,4 +272,16 @@ func ExampleBytes_bork() {
 	// Output:
 	// yes, it is nil
 	// [] []uint8
+}
+
+func ExampleIsosec() {
+	z, err := time.LoadLocation("Local")
+	if err != nil {
+		fmt.Println(err)
+	}
+	t := time.Date(2023, 1, 1, 13, 30, 0, 0, z)
+	log.Println(t.Format(to.IsosecFmt))
+	fmt.Println(to.Isosec(t))
+	// Output:
+	// 20230101183000
 }
