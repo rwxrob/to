@@ -283,5 +283,5 @@ func ExampleIsosec() {
 	log.Println(t.Format(to.IsosecFmt))
 	fmt.Println(to.Isosec(t))
 	// Output:
-	// 20230101183000
+	// 20230101T183000Z
 }
