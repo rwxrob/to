@@ -378,11 +378,3 @@ func HTTPS(url string) string {
 	}
 	return url
 }
-
-const IsosecFmt = `20060102T150405Z`
-
-// Isosec converts the passed time into an ISO8601 (RFC3339) string time
-// stamp.
-func Isosec(t time.Time) string {
-	return t.UTC().Format(IsosecFmt)
-}
