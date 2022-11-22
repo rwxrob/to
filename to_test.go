@@ -17,15 +17,16 @@ type stringer struct{}
 func (s stringer) String() string { return "stringer" }
 
 func ExampleString() {
+	r := strings.NewReader(`reader`)
 	stuff := []any{
 		"some", []byte{'t', 'h', 'i', 'n', 'g'},
-		1, 2.234, stringer{},
+		1, 2.234, stringer{}, r,
 	}
 	for _, s := range stuff {
 		fmt.Printf("%q ", to.String(s))
 	}
 	// Output:
-	// "some" "thing" "1" "2.234" "stringer"
+	// "some" "thing" "1" "2.234" "stringer" "reader"
 
 }
 
