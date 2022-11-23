@@ -7,3 +7,5 @@ require (
 	github.com/rwxrob/scan v0.8.0
 	github.com/rwxrob/structs v0.6.0
 )
+
+require github.com/rwxrob/pegn v0.1.0 // indirect

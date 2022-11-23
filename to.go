@@ -22,7 +22,7 @@ import (
 	"unicode"
 
 	"github.com/rwxrob/fn/maps"
-	"github.com/rwxrob/scan"
+	"github.com/rwxrob/pegn/scanner"
 	"github.com/rwxrob/structs/qstack"
 )
 
@@ -230,11 +230,33 @@ func Indentation[T Text](in T) int {
 // counting the unicode.IsGraphic runes. All others are ignored.  This
 // is critical when calculating line lengths for terminal output where
 // the string contains escape characters. Note that some runes will
-// occupy two columns instead of one depending on the terminal.
+// occupy two columns instead of one depending on the terminal. This
+// includes omitting any ASCI terminal escape sequences.
 func RuneCount[T string | []byte | []rune](in T) int {
 	var c int
-	s := scan.R{B: []byte(string(in))}
+	s := scanner.New(in)
+	var inesc bool
 	for s.Scan() {
+
+		if inesc {
+			if s.R == 'm' {
+				inesc = false
+			}
+			continue
+		}
+
+		// check for ansi terminal escapes
+		if s.R == '\033' {
+			m := s.Mark()
+			s.Scan()
+			if s.R != '[' {
+				s.Goto(m)
+				continue
+			}
+			inesc = true
+			continue
+		}
+
 		if unicode.IsGraphic(s.R) {
 			c++
 		}
@@ -259,7 +281,8 @@ func Words(it string) string {
 // word-hyphenation is made. Note that white space is defined as
 // unicode.IsSpace and does not include control characters. Anything
 // that is not unicode.IsSpace or unicode.IsGraphic will be ignored in
-// the column count.
+// the column count. Any terminal escapes that begin with \033[ will
+// also be kept automatically out of calculations. See Unescaped.
 func Wrapped(it string, width int) (string, int) {
 	words := qstack.Fields(it)
 	if width < 1 {

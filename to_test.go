@@ -160,6 +160,17 @@ func ExampleWrapped_long() {
 
 }
 
+func ExampleWrapped_escapes() {
+	in := `Here is a ` + "\033[34m" + `blue` + "\033[0m" + ` thing `
+	out, count := to.Wrapped(in, 16)
+	fmt.Println(count)
+	fmt.Printf("%q", out)
+	// Output:
+	// 5
+	// "Here is a \x1b[34mblue\x1b[0m\nthing"
+
+}
+
 func ExampleIndented() {
 	fmt.Println("Indented:\n" + to.Indented("some\nthing", 4))
 	// Output:
@@ -233,7 +244,9 @@ func ExampleRuneCount() {
 	//scan.Trace++
 	fmt.Println(to.RuneCount("\033some\033"))
 	fmt.Println(to.RuneCount("some"))
+	fmt.Println(to.RuneCount("\033[32msome\033[0m"))
 	// Output:
+	// 4
 	// 4
 	// 4
 }
