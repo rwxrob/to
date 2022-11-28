@@ -118,6 +118,12 @@ func ExampleDedent_accidental_Chop() {
 	// "foo\nar"
 }
 
+func ExampleDedent_single_blank_line() {
+	fmt.Printf("%q\n", to.Dedented("    \n"))
+	// Output:
+	// ""
+}
+
 func ExampleIndentation() {
 	fmt.Println(to.Indentation("    some"))
 	fmt.Println(to.Indentation("  some"))

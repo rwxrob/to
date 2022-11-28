@@ -187,6 +187,8 @@ func Prefixed(in, pre string) string {
 	return strings.Join(lines, "\n")
 }
 
+var isblank = regexp.MustCompile(`^\s*$`)
+
 // Dedented discards any initial blank lines with nothing but whitespace in
 // them and then detects the number and type of whitespace characters at
 // the beginning of the first line to the first non-whitespace rune and
@@ -197,8 +199,10 @@ func Prefixed(in, pre string) string {
 // up to the content creator to ensure that all lines have the same
 // space indentation.
 func Dedented(in string) string {
-	isblank := regexp.MustCompile(`^\s*$`)
 	lines := Lines(in)
+	for len(lines) == 1 && isblank.MatchString(lines[0]) {
+		return ""
+	}
 	var n int
 	for len(lines[n]) == 0 || isblank.MatchString(lines[n]) {
 		n++
