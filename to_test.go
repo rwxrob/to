@@ -291,3 +291,41 @@ func ExampleBytes_bork() {
 	// yes, it is nil
 	// [] []uint8
 }
+
+func ExampleCrunchSpace() {
+
+	fmt.Printf("%q\n", to.CrunchSpace(`here    is some`))
+	fmt.Printf("%q\n", to.CrunchSpace(`   here is some`))
+	fmt.Printf("%q\n", to.CrunchSpace(`here is some   `))
+	fmt.Printf("%q\n", to.CrunchSpace("here is\nsome"))
+	fmt.Printf("%q\n", to.CrunchSpace("here is\rsome"))
+	fmt.Printf("%q\n", to.CrunchSpace("here is\r\n some"))
+
+	// Output:
+	// "here is some"
+	// " here is some"
+	// "here is some "
+	// "here is some"
+	// "here is some"
+	// "here is some"
+
+}
+
+func ExampleTrimCrunchSpace() {
+
+	fmt.Printf("%q\n", to.TrimCrunchSpace(`here    is some`))
+	fmt.Printf("%q\n", to.TrimCrunchSpace(`   here is some`))
+	fmt.Printf("%q\n", to.TrimCrunchSpace(`here is some   `))
+	fmt.Printf("%q\n", to.TrimCrunchSpace("here is\nsome"))
+	fmt.Printf("%q\n", to.TrimCrunchSpace("here is\rsome"))
+	fmt.Printf("%q\n", to.TrimCrunchSpace("here is\r\n some"))
+
+	// Output:
+	// "here is some"
+	// "here is some"
+	// "here is some"
+	// "here is some"
+	// "here is some"
+	// "here is some"
+
+}

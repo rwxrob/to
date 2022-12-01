@@ -281,7 +281,7 @@ func Words(it string) string {
 // 1 will simply trim and crunch white space returning essentially the
 // same string and the word count.  If the width is less than any given
 // word at the start of a line than it will be the only word on the line
-// even if the word length exceeds the width. Non attempt at
+// even if the word length exceeds the width. No attempt at
 // word-hyphenation is made. Note that white space is defined as
 // unicode.IsSpace and does not include control characters. Anything
 // that is not unicode.IsSpace or unicode.IsGraphic will be ignored in
@@ -416,3 +416,29 @@ func HTTPS(url string) string {
 	}
 	return url
 }
+
+// CrunchSpace crunches all unicode.IsSpace into a single space. It does
+// not trim. See TrimCrunchSpace.
+func CrunchSpace(in string) string {
+	runes := make([]rune, 0)
+	s := scanner.New(in)
+	var inspace bool
+	for s.Scan() {
+		r := s.Rune()
+		if unicode.IsSpace(r) {
+			if inspace {
+				continue
+			}
+			runes = append(runes, ' ')
+			inspace = true
+			continue
+		}
+		inspace = false
+		runes = append(runes, r)
+	}
+	return string(runes)
+}
+
+// TrimCrunchSpace is same as CrunchSpace but trims initial and trailing
+// space.
+func TrimCrunchSpace(in string) string { return strings.TrimSpace(CrunchSpace(in)) }
