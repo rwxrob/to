@@ -329,3 +329,14 @@ func ExampleTrimCrunchSpace() {
 	// "here is some"
 
 }
+
+func ExampleTrimCrunchSpaceVisible() {
+
+	fmt.Printf("%q\n", to.TrimCrunchSpaceVisible(" here  \033  is\nsome "))
+	fmt.Printf("%q\n", to.TrimCrunchSpaceVisible(" here  \033  is \nsome "))
+
+	// Output:
+	// "here is some"
+	// "here is some"
+
+}

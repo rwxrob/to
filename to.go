@@ -439,6 +439,39 @@ func CrunchSpace(in string) string {
 	return string(runes)
 }
 
+// CrunchSpaceVisible crunches all unicode.IsSpace into a single space
+// and filters out anything that is not unicode.IsPrint. It does not
+// trim. See TrimCrunchSpaceVisible. Note that this requires three
+// passes through the string in order to resolve any white space that
+// might have been separated by escape and other characters.
+func CrunchSpaceVisible(in string) string {
+	in = CrunchSpace(in)
+	in = Visible(in)
+	in = CrunchSpace(in)
+	return in
+}
+
+// Visible filters out any rune that is not unicode.IsPrint().
+func Visible(in string) string {
+	runes := make([]rune, 0)
+	s := scanner.New(in)
+	for s.Scan() {
+		r := s.Rune()
+		if unicode.IsPrint(r) {
+			runes = append(runes, r)
+		}
+	}
+	return string(runes)
+}
+
+// TrimVisible removes anything but unicode.IsPrint and then trims. It
+// does not crunch spaces, however.
+func TrimVisible(in string) string { return strings.TrimSpace(Visible(in)) }
+
 // TrimCrunchSpace is same as CrunchSpace but trims initial and trailing
 // space.
 func TrimCrunchSpace(in string) string { return strings.TrimSpace(CrunchSpace(in)) }
+
+// TrimCrunchSpaceVisible is same as CrunchSpaceVisible but trims initial and trailing
+// space.
+func TrimCrunchSpaceVisible(in string) string { return strings.TrimSpace(CrunchSpaceVisible(in)) }
